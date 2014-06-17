@@ -36,19 +36,20 @@ int draw(int row, int column)
     return 0;
 }
 
-int move(char player)
+int move(int player)
 {
     int row, column;
 
-    printf("Please select a coordinate to place your %c (Row Column):\n", player);
+    draw(row, column);
+    printf("Please select a coordinate to place your %c (Row Column):\n", (player == 1) ? 'X' : 'O');
     scanf("%i %i", &row, &column);
 
-    if (board[row][column] == player) {
+    if (board[row][column] != ' ') {
         printf("\nYou cannot place that there. Try again.\n");
         scanf("%i %i", &row, &column);
     }
 
-    board[row][column] = player;
+    board[row][column] = (player == 1) ? 'X' : 'O';
 
     return row, column;
 }
@@ -56,23 +57,22 @@ int move(char player)
 int main(int argc, const char *argv[])
 {
     int i, row, column;
+    int player = 0;
 
-    for (i = 0; i < 9 &&  winner() == ' '; i++) {
+    for (i = 0; i < 9 && winner() == ' '; i++) {
+        player = i % 2 + 1;
 
-        draw(row, column);
-        move('X');
-        if (winner() == 'X') {
-            break;
-        }
-
-        draw(row, column);
-        move('O');
-        if (winner() == 'O') {
-            break;
-        }
+        move(player);
     }
     
-    printf("%c Wins!!\n", winner());
+    if (winner() != ' ') {
+        draw(row, column);
+        printf("%c Wins!!\n", winner());
+    } else {
+        draw(row, column);
+        printf("Tie.\n");
+    }
+
 
     return 0;
 }
