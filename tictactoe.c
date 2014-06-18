@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-char board[3][3] = {' ',' ',' ',
-                    ' ',' ',' ',
-                    ' ',' ',' '};
+char board[3][3] = {'1','2','3',
+                    '4','5','6',
+                    '7','8','9'};
 
 char winner(void)
 {
@@ -22,31 +22,37 @@ char winner(void)
             return board[0][2];
     }
 
-    return ' ';
+    return '0';
 
 }
 
-int draw(int row, int column)
+void draw(void)
 {
-    printf("   0  1  2\n0 [%c][%c][%c]\n1 [%c][%c][%c]\n2 [%c][%c][%c]\n",
-            board[0][0], board[0][1], board[0][2],
-            board[1][0], board[1][1], board[1][2],
-            board[2][0], board[2][1], board[2][2]);
-
-    return 0;
+    printf("\n");
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", board[0][0], board[0][1], board[0][2]);
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", board[1][0], board[1][1], board[1][2]);
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", board[2][0], board[2][1], board[2][2]);
+    printf("+---+---+---+\n");
 }
 
 int move(int player)
 {
-    int row, column;
+    int row, column, number;
 
-    draw(row, column);
-    printf("Please select a coordinate to place your %c (Row Column):\n", (player == 1) ? 'X' : 'O');
-    scanf("%i %i", &row, &column);
+    draw();
+    printf("Select a number to place your %c on: ", (player == 1) ? 'X' : 'O');
+    scanf("%i", &number);
+    row = --number / 3;
+    column = number % 3;
 
-    if (board[row][column] != ' ') {
-        printf("\nYou cannot place that there. Try again.\n");
-        scanf("%i %i", &row, &column);
+    if (board[row][column] == 'X' || board[row][column] == 'Y') {
+        printf("You cannot place that there. Try again: ");
+        scanf("%i", &number);
+        row = --number / 3;
+        column = number % 3;
     }
 
     board[row][column] = (player == 1) ? 'X' : 'O';
@@ -59,20 +65,18 @@ int main(int argc, const char *argv[])
     int i, row, column;
     int player = 0;
 
-    for (i = 0; i < 9 && winner() == ' '; i++) {
+    for (i = 0; i < 9 && winner() == '0'; i++) {
         player = i % 2 + 1;
-
         move(player);
     }
     
-    if (winner() != ' ') {
-        draw(row, column);
+    if (winner() != '0') {
+        draw();
         printf("%c Wins!!\n", winner());
     } else {
-        draw(row, column);
+        draw();
         printf("Tie.\n");
     }
-
 
     return 0;
 }
