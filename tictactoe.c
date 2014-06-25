@@ -1,10 +1,6 @@
 #include <stdio.h>
 
-char board[3][3] = {'1','2','3',
-                    '4','5','6',
-                    '7','8','9'};
-
-char winner(void)
+char winner(char board[3][3])
 {
     int i;
 
@@ -23,10 +19,9 @@ char winner(void)
     }
 
     return '0';
-
 }
 
-void draw(void)
+void draw(char board[3][3])
 {
     printf("\n");
     printf("+---+---+---+\n");
@@ -38,11 +33,11 @@ void draw(void)
     printf("+---+---+---+\n");
 }
 
-int move(int player)
+int move(int player, char board[3][3])
 {
     int row, column, number;
 
-    draw();
+    draw(board);
     printf("Select a number to place your %c on: ", (player == 1) ? 'X' : 'O');
     scanf("%i", &number);
     row = --number / 3;
@@ -64,17 +59,20 @@ int main(int argc, const char *argv[])
 {
     int i, row, column;
     int player = 0;
+    char board[3][3] = {'1','2','3',
+                        '4','5','6',
+                        '7','8','9'};
 
-    for (i = 0; i < 9 && winner() == '0'; i++) {
+    for (i = 0; i < 9 && winner(board) == '0'; i++) {
         player = i % 2 + 1;
-        move(player);
+        move(player, board);
     }
     
-    if (winner() != '0') {
-        draw();
-        printf("%c Wins!!\n", winner());
+    if (winner(board) != '0') {
+        draw(board);
+        printf("%c Wins!!\n", winner(board));
     } else {
-        draw();
+        draw(board);
         printf("Tie.\n");
     }
 
