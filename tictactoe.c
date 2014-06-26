@@ -33,7 +33,7 @@ void draw(char board[3][3])
     printf("+---+---+---+\n");
 }
 
-int move(int player, char board[3][3])
+void move(int player, char board[3][3])
 {
     int row, column, number;
 
@@ -51,8 +51,6 @@ int move(int player, char board[3][3])
     }
 
     board[row][column] = (player == 1) ? 'X' : 'O';
-
-    return row, column;
 }
 
 int main(int argc, const char *argv[])
